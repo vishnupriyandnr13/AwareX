@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const AwareXApp());
-}
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AwareXApp extends StatelessWidget {
   const AwareXApp({super.key});
@@ -12,24 +9,20 @@ class AwareXApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'AwareX',
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("AwareX"), centerTitle: true),
-      body: const Center(
-        child: Text(
-          "Welcome to AwareX",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      home: const Scaffold(
+        body: Center(
+          child: Text(
+            'AwareX',
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
   }
+}
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const ProviderScope(child: AwareXApp()));
 }
