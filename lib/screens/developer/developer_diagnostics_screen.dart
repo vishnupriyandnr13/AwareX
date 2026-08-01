@@ -6,6 +6,8 @@ import 'package:awarex/models/sensor/location_data.dart';
 import 'package:awarex/providers/sensor/location_provider.dart';
 import 'package:awarex/providers/sensor/permission_provider.dart';
 
+import 'package:awarex/widgets/diagnostics/battery_card.dart';
+import 'package:awarex/widgets/diagnostics/device_card.dart';
 import 'package:awarex/widgets/diagnostics/diagnostic_card.dart';
 import 'package:awarex/widgets/diagnostics/diagnostic_tile.dart';
 import 'package:awarex/widgets/diagnostics/motion_card.dart';
@@ -81,6 +83,9 @@ class _DeveloperDiagnosticsScreenState
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            // -------------------------------------------------------------
+            // Application
+            // -------------------------------------------------------------
             const SectionTitle(title: 'Application'),
 
             const DiagnosticCard(
@@ -93,6 +98,9 @@ class _DeveloperDiagnosticsScreenState
 
             const SizedBox(height: 20),
 
+            // -------------------------------------------------------------
+            // Permissions
+            // -------------------------------------------------------------
             const SectionTitle(title: 'Permissions'),
 
             DiagnosticCard(
@@ -105,6 +113,9 @@ class _DeveloperDiagnosticsScreenState
 
             const SizedBox(height: 20),
 
+            // -------------------------------------------------------------
+            // Location
+            // -------------------------------------------------------------
             const SectionTitle(title: 'Location'),
 
             DiagnosticCard(
@@ -151,9 +162,30 @@ class _DeveloperDiagnosticsScreenState
 
             const SizedBox(height: 20),
 
+            // -------------------------------------------------------------
+            // Motion
+            // -------------------------------------------------------------
             const SectionTitle(title: 'Motion'),
 
             const MotionCard(),
+
+            const SizedBox(height: 20),
+
+            // -------------------------------------------------------------
+            // Battery
+            // -------------------------------------------------------------
+            const SectionTitle(title: 'Battery'),
+
+            const BatteryCard(),
+
+            const SizedBox(height: 20),
+
+            // -------------------------------------------------------------
+            // Device
+            // -------------------------------------------------------------
+            const SectionTitle(title: 'Device'),
+
+            const DeviceCard(),
           ],
         ),
       ),

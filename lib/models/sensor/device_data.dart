@@ -30,5 +30,11 @@ class DeviceData {
   Map<String, dynamic> toJson() => _$DeviceDataToJson(this);
 
   @override
-  String toString() => 'Battery: $batteryLevel%';
+  String toString() {
+    return 'DeviceData('
+        'batteryLevel: $batteryLevel, '
+        'isCharging: $isCharging, '
+        'isScreenOn: $isScreenOn'
+        ')';
+  }
 }

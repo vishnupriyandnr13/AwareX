@@ -38,7 +38,7 @@ class ConnectivityServiceImpl implements ConnectivityService {
         ConnectivityResult.mobile => ConnectionType.mobile,
         ConnectivityResult.ethernet => ConnectionType.ethernet,
         ConnectivityResult.bluetooth => ConnectionType.bluetooth,
-        ConnectivityResult.vpn => ConnectionType.vpn,
+        ConnectivityResult.vpn => ConnectionType.none,
         _ => ConnectionType.none,
       },
     );
