@@ -12,28 +12,32 @@ class DeviceCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceService = ref.watch(deviceServiceProvider);
 
-    return DiagnosticCard(
-      child: StreamBuilder(
-        stream: deviceService.getDeviceDataStream(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const DiagnosticTile(
+    return FutureBuilder(
+      future: deviceService.getCurrentDeviceData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return DiagnosticCard(
+            child: DiagnosticTile(
               label: 'Device',
               value: 'Error',
               valueColor: Colors.red,
-            );
-          }
+            ),
+          );
+        }
 
-          if (!snapshot.hasData) {
-            return const Padding(
+        if (!snapshot.hasData) {
+          return const DiagnosticCard(
+            child: Padding(
               padding: EdgeInsets.all(20),
               child: Center(child: CircularProgressIndicator()),
-            );
-          }
+            ),
+          );
+        }
 
-          final deviceData = snapshot.data!;
+        final deviceData = snapshot.data!;
 
-          return Column(
+        return DiagnosticCard(
+          child: Column(
             children: [
               DiagnosticTile(
                 label: 'Battery',
@@ -51,9 +55,9 @@ class DeviceCard extends ConsumerWidget {
                 valueColor: deviceData.isScreenOn ? Colors.green : Colors.red,
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
