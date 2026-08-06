@@ -13,6 +13,12 @@ import 'package:awarex/widgets/diagnostics/diagnostic_tile.dart';
 import 'package:awarex/widgets/diagnostics/motion_card.dart';
 import 'package:awarex/widgets/diagnostics/section_title.dart';
 
+import 'package:awarex/providers/context/context_provider.dart';
+import 'package:awarex/widgets/diagnostics/context_card.dart';
+
+import 'package:awarex/providers/threat/threat_provider.dart';
+import 'package:awarex/widgets/diagnostics/threat_card.dart';
+
 class DeveloperDiagnosticsScreen extends ConsumerStatefulWidget {
   const DeveloperDiagnosticsScreen({super.key});
 
@@ -76,6 +82,8 @@ class _DeveloperDiagnosticsScreenState
 
   @override
   Widget build(BuildContext context) {
+    final contextAsync = ref.watch(contextProvider);
+    final threatAsync = ref.watch(threatProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Developer Diagnostics')),
       body: RefreshIndicator(
@@ -186,6 +194,57 @@ class _DeveloperDiagnosticsScreenState
             const SectionTitle(title: 'Device'),
 
             const DeviceCard(),
+            const SizedBox(height: 20),
+
+            // -------------------------------------------------------------
+            // Context
+            // -------------------------------------------------------------
+            const SectionTitle(title: 'Context'),
+
+            contextAsync.when(
+              data: (context) => ContextCard(context: context),
+
+              loading: () => const DiagnosticCard(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              ),
+
+              error: (error, _) => DiagnosticCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    error.toString(),
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            const SectionTitle(title: 'Threat Assessment'),
+
+            threatAsync.when(
+              data: (threat) => ThreatCard(threat: threat),
+
+              loading: () => const DiagnosticCard(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              ),
+
+              error: (error, _) => DiagnosticCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    error.toString(),
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
