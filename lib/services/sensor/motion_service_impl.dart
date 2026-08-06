@@ -25,7 +25,10 @@ class MotionServiceImpl implements MotionService {
   StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   StreamSubscription<GyroscopeEvent>? _gyroscopeSubscription;
 
+  Timer? _publishTimer;
+
   void _startListening() {
+    // Keep latest accelerometer values.
     _accelerometerSubscription = accelerometerEventStream().listen((event) {
       _currentMotion = _currentMotion.copyWith(
         timestamp: DateTime.now().toUtc(),
@@ -33,10 +36,9 @@ class MotionServiceImpl implements MotionService {
         accelerometerY: event.y,
         accelerometerZ: event.z,
       );
-
-      _controller.add(_currentMotion);
     });
 
+    // Keep latest gyroscope values.
     _gyroscopeSubscription = gyroscopeEventStream().listen((event) {
       _currentMotion = _currentMotion.copyWith(
         timestamp: DateTime.now().toUtc(),
@@ -44,8 +46,13 @@ class MotionServiceImpl implements MotionService {
         gyroscopeY: event.y,
         gyroscopeZ: event.z,
       );
+    });
 
-      _controller.add(_currentMotion);
+    // Publish at 5 Hz (every 200 ms).
+    _publishTimer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+      if (!_controller.isClosed) {
+        _controller.add(_currentMotion);
+      }
     });
   }
 
@@ -57,8 +64,11 @@ class MotionServiceImpl implements MotionService {
 
   @override
   void dispose() {
+    _publishTimer?.cancel();
+
     _accelerometerSubscription?.cancel();
     _gyroscopeSubscription?.cancel();
+
     _controller.close();
   }
 }
