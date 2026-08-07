@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:awarex/screens/developer/developer_diagnostics_screen.dart';
+
+import 'package:awarex/screens/home/home_screen.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const ProviderScope(child: AwareXApp()));
+}
 
 class AwareXApp extends StatelessWidget {
   const AwareXApp({super.key});
@@ -10,14 +17,8 @@ class AwareXApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'AwareX',
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
-      home: const DeveloperDiagnosticsScreen(),
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
+      home: const HomeScreen(),
     );
   }
-}
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(const ProviderScope(child: AwareXApp()));
 }
